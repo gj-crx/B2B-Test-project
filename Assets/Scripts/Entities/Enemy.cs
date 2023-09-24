@@ -8,6 +8,9 @@ using AI;
 using InventoryModule;
 using UI;
 
+/// <summary>
+/// Connects implementation logic with object capabilities
+/// </summary>
 public class Enemy : MonoBehaviour, IMovable, IHittable, IAbleToAttack
 {
     public float CurrentHP { get { return healthComponent.CurrentHP; } set { healthComponent.CurrentHP = value; } }
@@ -42,9 +45,8 @@ public class Enemy : MonoBehaviour, IMovable, IHittable, IAbleToAttack
 
     public void RecieveDamage(float damage)
     {
-        healthComponent.CurrentHP -= damage;
-        if (CurrentHP <= 0) Death();
-        if (healthBar != null) healthBar.ValueChanged(CurrentHP, healthComponent.MaxHP);
+        if (healthComponent.RecieveDamage(damage)) Death();
+        else if (healthBar != null) healthBar.ValueChanged(CurrentHP, healthComponent.MaxHP);
     }
 
     public void Attack(GameObject target)
@@ -54,8 +56,7 @@ public class Enemy : MonoBehaviour, IMovable, IHittable, IAbleToAttack
     
     private void Death()
     {
-        if (dropOnDeath.itemDroppedOnDeath != null)
-            Instantiate(PrefabManager.CollectibleItemPrefab, transform.position, Quaternion.identity).GetComponent<CollectableObject>().storedItem = dropOnDeath.itemDroppedOnDeath;
+        dropOnDeath.CreateItemOnDeath(transform.position);
         Destroy(gameObject);
     }
 }

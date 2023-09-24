@@ -6,6 +6,9 @@ using UI;
 using InventoryModule;
 using Zenject;
 
+/// <summary>
+/// Connects implementation logic with object capabilities
+/// </summary>
 public class PlayerObject : MonoBehaviour, IMovable, IHittable, IAbleToAttack, IAbleToCollectItems
 {
     public float CurrentHP { get { return healthComponent.CurrentHP; } set { healthComponent.CurrentHP = value; } }
@@ -34,9 +37,8 @@ public class PlayerObject : MonoBehaviour, IMovable, IHittable, IAbleToAttack, I
 
     public void RecieveDamage(float damage)
     {
-        CurrentHP -= damage;
-        if (CurrentHP <= 0) Death();
-        if (healthBar != null) healthBar.ValueChanged(CurrentHP, healthComponent.MaxHP);
+        if (healthComponent.RecieveDamage(damage)) Death();
+        else if (healthBar != null) healthBar.ValueChanged(CurrentHP, healthComponent.MaxHP);
     }
 
     public void Attack(GameObject target)

@@ -18,4 +18,13 @@ public class HealthComponent
     {
         CurrentHP = MaxHP;
     }
+    /// <summary>
+    /// Return true if unit is damage was fatal
+    /// </summary>
+    public bool RecieveDamage(float damage)
+    {
+        CurrentHP -= damage;
+        if (CurrentHP <= 0) return true;
+        return false;
+    }
 }

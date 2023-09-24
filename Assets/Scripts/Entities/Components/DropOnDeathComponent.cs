@@ -8,4 +8,12 @@ using InventoryModule;
 public class DropOnDeathComponent 
 {
     public Item itemDroppedOnDeath = null;
+
+    public void CreateItemOnDeath(Vector3 positionOnDeath)
+    {
+        if (itemDroppedOnDeath != null)
+        {
+            GameObject.Instantiate(PrefabManager.CollectibleItemPrefab, positionOnDeath, Quaternion.identity).GetComponent<CollectableObject>().storedItem = itemDroppedOnDeath;
+        }
+    }
 }
